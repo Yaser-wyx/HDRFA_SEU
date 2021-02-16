@@ -4,7 +4,12 @@
 
 ### 使用方法：
 
-使用方法有两种，一种是下载源代码，自己运行项目，另一种是下载已经用`PyInstaller`[编译好的文件](https://github.com/Yaser-wyx/HDRFA_NUIST/releases/tag/v0.1)，然后运行。
+使用方法有两种，一种是下载源代码，自己运行项目，另一种是下载已经用`PyInstaller`[编译好的文件](https://github.com/Yaser-wyx/HDRFA_NUIST/releases/tag/v0.1)，如果没有VPN可能下载比较慢，我已经放到百度云盘里面了：
+
+```
+链接：https://pan.baidu.com/s/1-tlXN84Yu4KBPR7DdUVCaA 
+提取码：iktu 
+```
 
 如果是下载源码运行，那么需要确保已经安装python3，并且安装了selenium、msedge-selenium-tools以及psutil这些模块，没有安装的，使用以下命令安装：
 
