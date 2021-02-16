@@ -1,11 +1,11 @@
 import datetime
 import os
-from time import sleep
 
 
 def isNewDay():
+    print("检查是否是新的一天。。。")
     try:
-        with open("task.log", 'r', encoding='utf-8') as f:
+        with open(os.getcwd() + "\\task.log", 'r', encoding='utf-8') as f:
             lines = f.readlines()
             if len(lines) > 0:
                 lastLine = lines[-1]
@@ -21,17 +21,15 @@ def isNewDay():
 
 
 def job():
-    os.system("main.exe")
-    with open('task.log', mode='a', encoding='utf-8') as f:
-        f.write(str(datetime.date.today()) + " | 任务执行！\n")
+    os.system(os.getcwd() + "\\main.exe")
+    with open(os.getcwd() + "\\task.log", mode='a', encoding='utf-8') as f:
+        f.write("\n" + str(datetime.date.today()) + " | 任务执行！\n")
 
 
 if __name__ == '__main__':
-    try:
-        while True:
-            if isNewDay():
-                job()
-            sleep(3600)  # 每小时检查一次
-    except Exception as ex:
-        with open('error.txt', 'a', encoding='utf-8') as f:
-            f.write(str(ex))
+    if isNewDay():
+        print("是新的一天，开始运行程序")
+        job()
+    else:
+        print("不是新的一天。。")
+    print("程序结束。。。")
