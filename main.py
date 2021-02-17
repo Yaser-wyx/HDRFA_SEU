@@ -1,4 +1,7 @@
+# utf-8
+import datetime
 import json
+import os
 from time import sleep
 
 from msedge.selenium_tools import Edge, EdgeOptions
@@ -6,6 +9,8 @@ from selenium import webdriver
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
+
+errorFlag = False
 
 
 class User:
@@ -29,6 +34,7 @@ def login(browser: WebDriver, user: User):
     except NoSuchElementException:
         print("用户：{} 登录失败，请检查密码和用户名！".format(user.username))
         browser.refresh()
+        errorFlag = True
         return False
 
 
@@ -101,6 +107,7 @@ def loadConfig():
             return configJson
     except FileNotFoundError:
         print("配置文件丢失！！")
+        errorFlag = True
         return None
 
 
@@ -111,7 +118,7 @@ def getBrowser(browserType, showBrowser, webDriverLocation):
         browser = openChromeBrowser(webDriverLocation, showBrowser)
     url = "https://authserver.nuist.edu.cn/authserver/login?service=http%3A%2F%2Fmy.nuist.edu.cn%2Findex.portal"
     browser.get(url)
-    browser.implicitly_wait(10)
+    browser.implicitly_wait(8)
     return browser
 
 
@@ -149,6 +156,7 @@ if __name__ == '__main__':
                     browser.quit()
                     browser = getBrowser(browserType=browserType, showBrowser=showBrowser,
                                          webDriverLocation=webDriverLocation)
+                    errorFlag = True
                     continue
 
             if errorUserList:
@@ -160,9 +168,17 @@ if __name__ == '__main__':
             browser.quit()
 
         except KeyError:
+            errorFlag = True
             print("配置文件数据有误，请检查！！")
         except WebDriverException:
+            errorFlag = True
             print("请填写正确的浏览器驱动路径！")
-
+    if errorFlag:
+        msg = "\n" + str(datetime.date.today()) + " | 任务执行 | Fail"
+    else:
+        msg = "\n" + str(datetime.date.today()) + " | 任务执行 | Success"
+    # 写入运行日志
+    with open(os.getcwd() + "\\task.log", mode='a', encoding='utf-8') as f:
+        f.write(msg)
     print("程序运行结束，3S后退出")
     sleep(3)
