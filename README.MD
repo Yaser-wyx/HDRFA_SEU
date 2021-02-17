@@ -4,7 +4,7 @@
 
 ### 使用方法：
 
-使用方法有两种，一种是下载源代码，自己运行项目，另一种是下载已经用`PyInstaller`[编译好的文件](https://github.com/Yaser-wyx/HDRFA_NUIST/releases/tag/v0.1)，如果没有VPN可能下载比较慢，我已经放到百度云盘里面了：
+使用方法有两种，一种是下载源代码，自己运行项目，另一种是下载已经用`PyInstaller`[编译好的文件](https://github.com/Yaser-wyx/HDRFA_NUIST/releases)，如果没有VPN可能下载比较慢，我已经放到百度云盘里面了：
 
 ```
 链接：https://pan.baidu.com/s/1-tlXN84Yu4KBPR7DdUVCaA 
