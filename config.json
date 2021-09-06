@@ -1,11 +1,11 @@
 {
   "userList": [
     {
-      "username": "220214853",
-      "password": "17602545735wyX"
+      "username": "你的卡号",
+      "password": "你的密码"
     }
   ],
   "browserType": 1,
-  "webDriverLocation": "F:\\chromeDriver\\chromedriver.exe",
+  "webDriverLocation": "你的驱动地址",
   "showBrowser": true
 }
