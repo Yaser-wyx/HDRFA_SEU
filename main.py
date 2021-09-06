@@ -6,9 +6,11 @@ from time import sleep
 
 from msedge.selenium_tools import Edge, EdgeOptions
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.webdriver import WebDriver
+from selenium.webdriver import ActionChains
 
 errorFlag = False
 
@@ -21,44 +23,73 @@ class User:
 
 def login(browser: WebDriver, user: User):
     print("进行用户：{}登录".format(user.username))
+    login_btn = browser.find_element_by_id("ampHasNoLogin")
+    login_btn.click()
     usernameInput = browser.find_element_by_id("username")
     passwordInput = browser.find_element_by_id("password")
+    usernameInput.click()
     usernameInput.send_keys(user.username)
+    passwordInput.click()
     passwordInput.send_keys(user.password)
-    loginBtn = browser.find_element_by_id("login_submit")
+    loginBtn = browser.find_element_by_id("xsfw")
     loginBtn.click()
-    try:
-        browser.find_element_by_id("welcomeMsg")
-        print("用户：{} 登录成功！".format(user.username))
-        return True
-    except NoSuchElementException:
+    sleep(1)
+
+    def login_fail(user):
+        global errorFlag
         print("用户：{} 登录失败，请检查密码和用户名！".format(user.username))
         browser.refresh()
         errorFlag = True
         return False
 
+    try:
+        user_id = browser.find_element_by_xpath(
+            "//*[@id=\"app\"]/div[1]/div/div[2]/div[2]/div[1]/div/div[1]/div/div[1]/div[2]/div/a/div[3]").text[-9:]
+        print(user_id)
+        if user_id == user.username:
+            print("用户：{} 登录成功！".format(user.username))
+            return True
+        else:
+            return login_fail(user)
+    except NoSuchElementException:
+        return login_fail(user)
+
 
 def fillInForm(browser: WebDriver):
     print("开始填写表单。。。")
-    temperatureInput = browser.find_element_by_xpath("//input[@name='fieldSTQKfrtw']")
-    temperatureInput.send_keys("36.2")  # 体温数据
-    checkBtn = browser.find_element_by_xpath("//input[@name='fieldCNS']")
-    checkBtn.click()
-    submitBtn = browser.find_element_by_xpath("//li[@class='command_button']")
-    submitBtn.click()
-    okBtn = browser.find_element_by_xpath("//button[@class='dialog_button default fr']")
-    okBtn.click()
+    sleep(1)
+    addNewBtn = browser.find_element_by_xpath("/html/body/main/article/section/div[2]/div[1]")
+    addNewBtn.click()
+    sleep(3)
+    try:
+        temperatureInput = browser.find_element_by_xpath(
+            "/html/body/div[11]/div/div[1]/section/div[2]/div/div[4]/div[2]/div[1]/div/div/input")
+        temperatureInput.send_keys("36.2")  # 体温数据
+        saveBtn = browser.find_element_by_xpath("//*[@id=\"save\"]")
+        saveBtn.click()
+        okBtn = browser.find_element_by_xpath("/html/body/div[62]/div[1]/div[1]/div[2]/div[2]/a[1]")
+        okBtn.click()
+    except NoSuchElementException:
+        hasFilled = browser.find_element_by_xpath("/html/body/div[11]/div[1]/div[1]/div[2]/div[1]/div").text
+        if hasFilled == "今日已填报！":
+            print("今天的日报已经填过啦！")
+
     print("表单填写完成！")
 
 
 def enterForm(browser: WebDriver):
     print("查找表单")
-    dailyReportBtn = browser.find_element_by_xpath("//*[@id='pf2581']//td[3]/div/a")
-    dailyReportBtn.click()
-    windows = browser.window_handles
-    browser.switch_to.window(windows[-1])
-    stuDailyRepBtn = browser.find_element_by_xpath("//a[@title='学生健康状况日报']")
-    stuDailyRepBtn.click()
+
+    serverBtn = browser.find_element_by_xpath("//*[@id=\"app\"]/div[2]/div[1]/div/div[2]/div/a[2]")
+    serverBtn.click()
+    sleep(1)
+    searchInput = browser.find_element_by_xpath("//*[@id=\"app\"]/div[2]/div[2]/div/div/div/div[1]/div[3]/input")
+    searchInput.send_keys("全校师生每日健康申报系统")
+    sleep(1)
+    searchInput.send_keys(Keys.ENTER)
+    sleep(1)
+    entranceBtn = browser.find_element_by_xpath("//*[@id=\"app\"]/div[2]/div[2]/div/div/div/div[3]/div/div[2]/a")
+    entranceBtn.click()
     windows = browser.window_handles
     browser.switch_to.window(windows[-1])
     print("进入表单成功！")
@@ -72,7 +103,10 @@ def exitUser(browser: WebDriver):
         browser.switch_to.window(window)
         browser.close()
     browser.switch_to.window(windows[0])
-    quitBtn = browser.find_element_by_xpath("//a[@id='quit']")
+    userBtn = browser.find_element_by_xpath("//*[@id=\"app\"]/div[2]/div[1]/div/div[3]/span/div")
+    ActionChains(driver=browser).move_to_element(userBtn).perform()
+    sleep(0.5)
+    quitBtn = browser.find_element_by_xpath("//*[@id=\"app\"]/div[2]/div[1]/div/div[3]/span/div/div/a[2]")
     quitBtn.click()
     print("当前用户退出成功！")
 
@@ -101,6 +135,8 @@ def openChromeBrowser(webDriverLocation: str, showBrowser: bool) -> webdriver:
 
 
 def loadConfig():
+    global errorFlag
+
     try:
         with open(file="./config.json", mode='r', encoding="utf-8") as f:
             configJson = json.load(f)
@@ -116,7 +152,7 @@ def getBrowser(browserType, showBrowser, webDriverLocation):
         browser = openEdgeBrowser(webDriverLocation, showBrowser)
     else:
         browser = openChromeBrowser(webDriverLocation, showBrowser)
-    url = "https://authserver.nuist.edu.cn/authserver/login?service=http%3A%2F%2Fmy.nuist.edu.cn%2Findex.portal"
+    url = "http://ehall.seu.edu.cn/new/index.html"
     browser.get(url)
     browser.implicitly_wait(8)
     return browser
@@ -139,11 +175,11 @@ if __name__ == '__main__':
                 try:
                     # 登录
                     if login(browser=browser, user=user):
+                        pass
                         # 进入表单填报
                         enterForm(browser=browser)
                         # 填写表单
                         fillInForm(browser=browser)
-                        # print(usernameInput)
                         print("用户：{} 日报填写完成！".format(user.username))
                         # 退出当前用户
                         exitUser(browser=browser)

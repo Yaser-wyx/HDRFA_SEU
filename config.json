@@ -1,11 +1,11 @@
 {
   "userList": [
     {
-      "username": "你的用户名",
-      "password": "你的密码"
+      "username": "220214853",
+      "password": "17602545735wyX"
     }
   ],
-  "browserType": 0,
-  "webDriverLocation": "浏览器驱动地址，如果browserType值为0就是edge浏览器的驱动地址，否则就是chrome浏览器的驱动地址",
-  "showBrowser": false
+  "browserType": 1,
+  "webDriverLocation": "F:\\chromeDriver\\chromedriver.exe",
+  "showBrowser": true
 }

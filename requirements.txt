@@ -1,0 +1,2 @@
+selenium==3.141.0
+msedge_selenium_tools==3.141.3

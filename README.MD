@@ -1,10 +1,10 @@
-## NUIST健康日报自动填写工具
+## SEU健康日报自动填写工具
 
-> 本项目主要用于NUIST学生健康日报的自动填写，名字`HDRFA`是`Health Daily Report Fill Auto`的首字母缩写，本项目仅支持`Chrome`与新版`Edge`浏览器（也就是使用`chromium`内核的，关于如何区别是旧内核还是新内核，可以看[这里](https://jingyan.baidu.com/article/2fb0ba4071cb7c41f3ec5f19.html)。
+> 本项目主要用于SEU学生健康日报的自动填写，名字`HDRFA`是`Health Daily Report Fill Auto`的首字母缩写，本项目仅支持`Chrome`与新版`Edge`浏览器（也就是使用`chromium`内核的，关于如何区别是旧内核还是新内核，可以看[这里](https://jingyan.baidu.com/article/2fb0ba4071cb7c41f3ec5f19.html)。
 
 ### 使用方法：
 
-使用方法有两种，一种是下载源代码，自己运行项目，另一种是下载已经用`PyInstaller`[编译好的文件](https://github.com/Yaser-wyx/HDRFA_NUIST/releases)，如果没有VPN可能下载比较慢，我已经放到百度云盘里面了：
+使用方法有两种，一种是下载源代码，自己运行项目，另一种是下载已经用`PyInstaller`[编译好的文件](https://github.com/Yaser-wyx/HDRFA_SEU/releases)，如果没有VPN可能下载比较慢，我已经放到百度云盘里面了：
 
 ```
 链接：https://pan.baidu.com/s/1-tlXN84Yu4KBPR7DdUVCaA 
@@ -14,9 +14,7 @@
 如果是下载源码运行，那么需要确保已经安装python3，并且安装了selenium、msedge-selenium-tools以及psutil这些模块，没有安装的，使用以下命令安装：
 
 ``` shell
-pip install msedge-selenium-tools
-pip install selenium
-pip install psutil
+pip install -r requirements.txt
 ```
 
 ### 使用步骤：
@@ -47,9 +45,11 @@ pip install psutil
    - ![image-20210216204251360](picture/image-20210216204251360.png)
 
 ---
+**本项目是另一个项目的一个分支版本：https://github.com/Yaser-wyx/HDRFA_NUIST**
 ## 更新和BUG修复日志：
 - 2021/2/17：
   1. 对于task增加了检测上一次运行是否成功，成功则不运行，否则再次运行。
-   2. 修复了若干BUG
-  
+  2. 修复了若干BUG
+- 2021/9/6：
+  1. 增加了SEU版本
 
